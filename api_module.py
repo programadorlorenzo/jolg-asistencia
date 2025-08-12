@@ -65,7 +65,7 @@ class APIClient:
         Registra asistencia en el servidor
         
         Args:
-            personal_id (int): ID del personal
+            personal_id (str): ID del personal (TIENDA1, TIENDA2, TIENDA3)
             observaciones (str): Observaciones
             foto_ruta (str): Ruta de la foto subida
             fecha_hora (str): Fecha y hora de registro
@@ -78,7 +78,7 @@ class APIClient:
                 fecha_hora = datetime.now().isoformat() + "Z"
             
             data = {
-                "personalID": personal_id,
+                "personalID": personal_id,  # Ahora puede ser texto
                 "observaciones": observaciones,
                 "fotoRuta": foto_ruta,
                 "fechaHoraRegistro": fecha_hora

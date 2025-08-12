@@ -23,27 +23,19 @@ class CameraThread(QThread):
     def run(self):
         """Ejecuta la captura de video"""
         try:
-            self.camera = cv2.VideoCapture(self.camera_id)
-            
-            # Pequeño delay para dar tiempo a la cámara
-            import time
-            time.sleep(0.5)
+            self.camera = cv2.VideoCapture(self.camera_id, cv2.CAP_DSHOW)  # DirectShow para Windows más rápido
             
             if not self.camera.isOpened():
                 self.error_occurred.emit("No se puede acceder a la cámara")
                 return
             
-            # Configurar resolución
+            # Configuración mínima para máxima velocidad
             self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+            self.camera.set(cv2.CAP_PROP_FPS, 10)
+            self.camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Buffer mínimo
             
             self.running = True
-            
-            # Leer algunos frames iniciales para estabilizar
-            for _ in range(3):
-                ret, frame = self.camera.read()
-                if not ret:
-                    break
             
             while self.running:
                 ret, frame = self.camera.read()
@@ -57,6 +49,7 @@ class CameraThread(QThread):
                     # Crear QImage
                     qt_image = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
                     self.changePixmap.emit(qt_image)
+                
                 else:
                     self.error_occurred.emit("Error leyendo de la cámara")
                     break

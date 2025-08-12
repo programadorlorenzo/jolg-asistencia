@@ -41,16 +41,12 @@ class AsistenciaApp:
     def setup_camera(self):
         """Configura e inicia la cámara"""
         try:
-            print("Iniciando configuración de cámara...")
             camera_thread = self.camera_manager.start_camera()
             camera_thread.changePixmap.connect(self.update_camera_image)
             camera_thread.error_occurred.connect(self.handle_camera_error)
-            print("Iniciando hilo de cámara...")
             camera_thread.start()
-            print("Hilo de cámara iniciado")
             
         except Exception as e:
-            print(f"Error en setup_camera: {e}")
             self.ui.update_status(f"Error iniciando cámara: {str(e)}", "error")
     
     def update_camera_image(self, qt_image):
@@ -67,7 +63,6 @@ class AsistenciaApp:
             
             # Solo mostrar esto una vez
             if not hasattr(self, '_camera_started'):
-                print("✅ Cámara funcionando correctamente")
                 self.ui.update_status("Cámara lista", "success")
                 self._camera_started = True
                 
@@ -83,8 +78,8 @@ class AsistenciaApp:
         """Registra la asistencia del usuario"""
         # Validar campos
         personal_id = self.ui.get_personal_id()
-        if not personal_id or not personal_id.isdigit():
-            self.ui.show_message("Error", "Por favor ingrese un ID de personal válido", "warning")
+        if not personal_id:
+            self.ui.show_message("Error", "Por favor seleccione un Personal ID", "warning")
             return
         
         observaciones = self.ui.get_observaciones()
@@ -110,7 +105,7 @@ class AsistenciaApp:
                 
                 # Guardar localmente primero
                 self.local_storage.save_record(
-                    int(personal_id), 
+                    personal_id,  # Ahora es texto, no número
                     observaciones, 
                     foto_path, 
                     sent=False
@@ -118,7 +113,7 @@ class AsistenciaApp:
                 
                 # Iniciar proceso de envío en segundo plano
                 self.current_worker = AsistenciaWorker(
-                    int(personal_id),
+                    personal_id,  # Enviar como texto
                     observaciones,
                     foto_path
                 )

@@ -26,5 +26,26 @@
     "usuarioJolg": "Vendedortienda2",
     "foto": "fotos\\foto_Vendedortienda2_20250811_185900.jpg",
     "enviado": false
+  },
+  {
+    "timestamp": "2025-08-11T20:08:35.403120",
+    "personalID": "TIENDA1",
+    "observaciones": "LLEGUE UN POCO TARDE PERDON",
+    "foto_path": "fotos\\asistencia_TIENDA1_20250811_200835.jpg",
+    "sent": false
+  },
+  {
+    "timestamp": "2025-08-11T20:10:35.204284",
+    "personalID": "TIENDA1",
+    "observaciones": "ESPERO QUE TODO VAYA BIEN",
+    "foto_path": "fotos\\asistencia_TIENDA1_20250811_201035.jpg",
+    "sent": false
+  },
+  {
+    "timestamp": "2025-08-11T20:19:40.256851",
+    "personalID": "TIENDA1",
+    "observaciones": "tuve una urgencia",
+    "foto_path": "fotos\\asistencia_TIENDA1_20250811_201940.jpg",
+    "sent": false
   }
 ]
