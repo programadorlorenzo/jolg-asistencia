@@ -8,7 +8,6 @@ import sys
 import os
 from datetime import datetime
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QPixmap
 
 # Importar módulos locales
@@ -42,15 +41,18 @@ class AsistenciaApp:
     def setup_camera(self):
         """Configura e inicia la cámara"""
         try:
+            print("Iniciando configuración de cámara...")
             camera_thread = self.camera_manager.start_camera()
             camera_thread.changePixmap.connect(self.update_camera_image)
             camera_thread.error_occurred.connect(self.handle_camera_error)
+            print("Iniciando hilo de cámara...")
             camera_thread.start()
+            print("Hilo de cámara iniciado")
             
         except Exception as e:
+            print(f"Error en setup_camera: {e}")
             self.ui.update_status(f"Error iniciando cámara: {str(e)}", "error")
     
-    @pyqtSlot(object)
     def update_camera_image(self, qt_image):
         """Actualiza la imagen de la cámara en la UI"""
         try:
@@ -62,10 +64,16 @@ class AsistenciaApp:
                 transformMode=1  # Smooth transformation
             )
             camera_label.setPixmap(scaled_pixmap)
+            
+            # Solo mostrar esto una vez
+            if not hasattr(self, '_camera_started'):
+                print("✅ Cámara funcionando correctamente")
+                self.ui.update_status("Cámara lista", "success")
+                self._camera_started = True
+                
         except Exception as e:
             print(f"Error actualizando imagen: {e}")
     
-    @pyqtSlot(str)
     def handle_camera_error(self, error_message):
         """Maneja errores de la cámara"""
         self.ui.update_status(f"Error de cámara: {error_message}", "error")
@@ -131,7 +139,6 @@ class AsistenciaApp:
             self.ui.update_status(f"Error inesperado: {str(e)}", "error")
             self.ui.show_message("Error", f"Error inesperado: {str(e)}", "error")
     
-    @pyqtSlot(bool, str)
     def handle_registro_finished(self, success, message):
         """Maneja el resultado del registro de asistencia"""
         self.ui.hide_progress()

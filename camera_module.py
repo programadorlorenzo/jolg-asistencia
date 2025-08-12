@@ -24,6 +24,11 @@ class CameraThread(QThread):
         """Ejecuta la captura de video"""
         try:
             self.camera = cv2.VideoCapture(self.camera_id)
+            
+            # Pequeño delay para dar tiempo a la cámara
+            import time
+            time.sleep(0.5)
+            
             if not self.camera.isOpened():
                 self.error_occurred.emit("No se puede acceder a la cámara")
                 return
@@ -33,6 +38,12 @@ class CameraThread(QThread):
             self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
             
             self.running = True
+            
+            # Leer algunos frames iniciales para estabilizar
+            for _ in range(3):
+                ret, frame = self.camera.read()
+                if not ret:
+                    break
             
             while self.running:
                 ret, frame = self.camera.read()

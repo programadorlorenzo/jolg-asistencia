@@ -28,7 +28,6 @@ class ModernButton(QPushButton):
             }}
             QPushButton:hover {{
                 background-color: {self._darker_color(color)};
-                transform: translateY(-1px);
             }}
             QPushButton:pressed {{
                 background-color: {self._darkest_color(color)};
