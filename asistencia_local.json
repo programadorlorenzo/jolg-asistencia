@@ -47,5 +47,26 @@
     "observaciones": "tuve una urgencia",
     "foto_path": "fotos\\asistencia_TIENDA1_20250811_201940.jpg",
     "sent": false
+  },
+  {
+    "timestamp": "2025-08-11T20:24:29.634385",
+    "personalID": "TIENDA1",
+    "observaciones": "espero este todo bien",
+    "foto_path": "fotos\\asistencia_TIENDA1_20250811_202429.jpg",
+    "sent": false
+  },
+  {
+    "timestamp": "2025-08-11T20:25:35.928889",
+    "personalID": "TIENDA2",
+    "observaciones": "habia mucho trafico",
+    "foto_path": "fotos\\asistencia_TIENDA2_20250811_202535.jpg",
+    "sent": false
+  },
+  {
+    "timestamp": "2025-08-11T20:25:55.680641",
+    "personalID": "TIENDA3",
+    "observaciones": "probando",
+    "foto_path": "fotos\\asistencia_TIENDA3_20250811_202555.jpg",
+    "sent": false
   }
 ]

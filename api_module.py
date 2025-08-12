@@ -75,11 +75,21 @@ class APIClient:
         """
         try:
             if fecha_hora is None:
-                fecha_hora = datetime.now().isoformat() + "Z"
+                # Formato ISO 8601 con timezone UTC
+                fecha_hora = datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + "Z"
+            
+            # Convertir personalID a número según la tienda
+            personal_id_map = {
+                "TIENDA1": 1,
+                "TIENDA2": 2, 
+                "TIENDA3": 3
+            }
+            
+            personal_id_num = personal_id_map.get(personal_id, 1)
             
             data = {
-                "personalID": personal_id,  # Ahora puede ser texto
-                "observaciones": observaciones,
+                "personalID": personal_id_num,  # Ahora es número
+                "observaciones": observaciones if observaciones else "",
                 "fotoRuta": foto_ruta,
                 "fechaHoraRegistro": fecha_hora
             }
@@ -89,12 +99,17 @@ class APIClient:
                 'Content-Type': 'application/json'
             }
             
+            print(f"DEBUG: Enviando datos: {data}")  # Para debug
+            
             response = requests.post(
                 self.asistencia_endpoint,
                 json=data,
                 headers=headers,
                 timeout=self.timeout
             )
+            
+            print(f"DEBUG: Response status: {response.status_code}")  # Para debug
+            print(f"DEBUG: Response body: {response.text}")  # Para debug
             
             response.raise_for_status()
             return True, response.json() if response.content else "Asistencia registrada"
